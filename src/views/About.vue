@@ -1,5 +1,16 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <v-container fluid>
+    <v-layout row wrap>
+      <v-flex xs12 class="text-xs-center" mt-5>
+        <h1>About page</h1>
+      </v-flex>
+      <v-flex xs12 class="text-xs-center" mt-3>
+        <p>This is a about us</p>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
+
+<script>
+export default {}
+</script>

@@ -5,10 +5,35 @@
         <h1>Sign Up</h1>
       </v-flex>
       <v-flex xs12 sm6 offset-sm3 mt-3>
-        <form @submit.prevent="userSignUp">
-          <v-layout column>
+        <v-layout column>
+          <v-flex>
+            <v-alert
+              error
+              dismissible
+              icon="warning"
+              transition="scale-transition"
+              outline
+              v-model="alert"
+            >{{ error }}</v-alert>
+          </v-flex>
+          <form @submit.prevent="userSignUp">
             <v-flex>
-              <v-alert error dismissible v-model="alert">{{ error }}</v-alert>
+              <v-text-field
+                name="firstname"
+                label="First Name"
+                id="firstname"
+                type="text"
+                v-model.trim="firstname"
+              ></v-text-field>
+            </v-flex>
+            <v-flex>
+              <v-text-field
+                name="lastname"
+                label="Last Name"
+                id="lastname"
+                type="text"
+                v-model.trim="lastname"
+              ></v-text-field>
             </v-flex>
             <v-flex>
               <v-text-field
@@ -44,8 +69,8 @@
             <v-flex class="text-xs-center" mt-2>
               <v-btn color="primary" type="submit" :disabled="loading">Sign Up</v-btn>
             </v-flex>
-          </v-layout>
-        </form>
+          </form>
+        </v-layout>
       </v-flex>
     </v-layout>
   </v-container>
@@ -55,6 +80,8 @@
 export default {
   data() {
     return {
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
       passwordConfirm: '',
@@ -67,6 +94,8 @@ export default {
         return
       }
       this.$store.dispatch('userSignUp', {
+        firstname: this.firstname,
+        lastname: this.lastname,
         email: this.email,
         password: this.password
       })

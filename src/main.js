@@ -1,21 +1,23 @@
 import Vue from 'vue'
 import './plugins/vuetify'
-import './plugins/firebase'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import firebase from 'firebase'
+const firebase = require('./plugins/firebase.js')
 
-let app = ''
+let app
 
 Vue.config.productionTip = false
 
-firebase.auth().onAuthStateChanged(() => {
+firebase.auth.onAuthStateChanged(firebaseUser => {
   if (!app) {
     new Vue({
       router,
       store,
-      render: h => h(App)
+      render: h => h(App),
+      created() {
+        store.dispatch('autoSignIn', firebaseUser)
+      }
     }).$mount('#app')
   }
 })

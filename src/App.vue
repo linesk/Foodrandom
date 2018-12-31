@@ -10,7 +10,10 @@
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
         <v-list-tile flat @click="userSignOut" v-if="isAuthenticated">
-          <v-icon left>exit_to_app</v-icon>Sign Out
+          <v-list-tile-action>
+            <v-icon left>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>Sign Out</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -19,8 +22,11 @@
       <span class="hidden-sm-and-up">
         <v-toolbar-side-icon @click="sidebar = !sidebar"></v-toolbar-side-icon>
       </span>
-      <v-toolbar-title>
+      <v-toolbar-title v-if="!isAuthenticated">
         <router-link to="/" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
+      </v-toolbar-title>
+      <v-toolbar-title v-else>
+        <router-link to="/home" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -35,7 +41,7 @@
     </v-toolbar>
 
     <v-content>
-      <router-view></router-view>
+        <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -59,7 +65,10 @@ export default {
     },
     menuItems() {
       return this.isAuthenticated
-        ? [{ title: 'Home', path: '/home', icon: 'home' }]
+        ? [
+            { title: 'Home', path: '/home', icon: 'home' },
+            { title: 'About', path: '/about', icon: 'info' }
+          ]
         : [
             { title: 'Sign Up', path: '/signup', icon: 'face' },
             { title: 'Sign In', path: '/signin', icon: 'lock_open' }

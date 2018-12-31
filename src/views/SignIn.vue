@@ -7,7 +7,14 @@
       <v-flex xs12 sm6 offset-sm3 mt-3>
         <form @submit.prevent="userSignIn">
           <v-flex>
-            <v-alert error dismissible v-model="alert">{{ error }}</v-alert>
+            <v-alert
+              error
+              dismissible
+              icon="warning"
+              transition="scale-transition"
+              outline
+              v-model="alert"
+            >{{ error }}</v-alert>
           </v-flex>
           <v-layout column>
             <v-flex>
@@ -65,7 +72,7 @@ export default {
     },
     alert(value) {
       if (!value) {
-        this.$store.dispatch('setError', false)
+        this.$store.dispatch('setError', null)
       }
     }
   },

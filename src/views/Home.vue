@@ -6,11 +6,19 @@
       </v-flex>
       <v-flex xs12 class="text-xs-center" mt-3>
         <p>This is a user's home page</p>
+        <bridge></bridge>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-export default {}
+import Bridge from '../components/Bridge'
+
+export default {
+  name: 'Home',
+  components: {
+    Bridge
+  }
+}
 </script>
