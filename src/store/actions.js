@@ -14,6 +14,7 @@ export const actions = {
         commit('setUser', firebaseUser)
         commit('setError', null)
         commit('setLoading', false)
+        router.push('/home')
       })
       .catch(error => {
         commit('setError', error.message)

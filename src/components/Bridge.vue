@@ -11,7 +11,7 @@
           <v-radio v-for="trump in trumps" :key="trump" :label="`Trump ${trump}`" :value="trump"></v-radio>
         </v-radio-group>
       </v-flex>
-      <v-flex>
+      <v-flex xs12 sm12 d-flex>
         <v-radio-group v-model="result" solo row>
           <v-radio v-for="i in results" :key="i" :label="`Result: ${i}`" :value="i"></v-radio>
         </v-radio-group>
@@ -54,17 +54,21 @@ export default {
     score() {
       var score = 0
       if (this.result >= 0) {
-        score += 50
         if (this.selectedtrump == 'NT') {
           score += 40 + 30 * (this.selectedlevel + this.result - 1)
-          if (this.selectedlevel >= 3) score += 250
+          if (this.selectedlevel >= 3) score += 300
+          else score += 50
         } else if (this.selectedtrump == 'S' || this.selectedtrump == 'H') {
           score += 30 * (this.selectedlevel + this.result)
-          if (this.selectedlevel >= 4) score += 250
+          if (this.selectedlevel >= 4) score += 300
+          else score += 50
         } else {
           score += 20 * (this.selectedlevel + this.result)
-          if (this.selectedlevel >= 5) score += 250
+          if (this.selectedlevel >= 5) score += 300
+          else score += 50
         }
+        if (this.selectedlevel == 6) score += 500
+        else if (this.selectedlevel == 7) score += 1000
       } else {
         score += 50 * this.result
       }
