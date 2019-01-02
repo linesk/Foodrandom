@@ -8,18 +8,11 @@
         <v-select :items="levels" label="Level" v-model="selectedlevel" outline></v-select>
       </v-flex>
       <v-flex xs12 sm6 d-flex class="pa-1">
-        <v-switch
-          :label="`Vulnerable 1: ${vulnerable.toString().toUpperCase()}`"
-          v-model="vulnerable"
-        ></v-switch>
+        <v-switch label="Vulnerable" v-model="vulnerable" color="red"></v-switch>
       </v-flex>
       <v-flex xs12 sm6 d-flex class="pa-1">
-        <v-switch :label="`Doubled: ${doubled.toString().toUpperCase()}`" v-model="doubled"></v-switch>
-        <v-switch
-          v-show="doubled"
-          :label="`Redoubled: ${redoubled.toString().toUpperCase()}`"
-          v-model="redoubled"
-        ></v-switch>
+        <v-switch label="Doubled" v-model="doubled" color="red"></v-switch>
+        <v-switch v-show="doubled" label="Redoubled" color="indigo" v-model="redoubled"></v-switch>
       </v-flex>
       <v-flex xs12 sm12 d-flex class="pa-1">
         <v-slider
@@ -35,7 +28,7 @@
       </v-flex>
 
       <v-flex xs12 sm12 d-flex class="pa-3">
-        <h5>Vulnerable: {{ vulnerable }}</h5>
+        <h5>Vulnerable: {{ vulnerable.toString().toUpperCase() }}</h5>
         <h5>Bid: {{ bid }}</h5>
         <h5>Result: {{ result }}</h5>
         <h4>Score: {{ score }}</h4>
@@ -63,18 +56,18 @@ export default {
   computed: {
     bid() {
       if (this.selectedlevel && this.selectedtrump) {
-        var x = ''
-        if (this.redoubled) x = 'xx'
-        else if (this.doubled) x = 'x'
-        return this.selectedlevel + this.selectedtrump + x
+        var risk = ''
+        if (this.doubled) {
+          risk += 'X'
+          if (this.redoubled) risk += 'X'
+        }
+        return this.selectedlevel + this.selectedtrump + risk
       } else return '-'
     },
     results() {
-      var results = []
-      for (var i = 1; i <= 13; i++) {
-        results.push(i - 6 - this.selectedlevel)
-      }
-      return [Math.max(...results), Math.min(...results)]
+      let max = 7 - this.selectedlevel
+      let min = -(this.selectedlevel + 6)
+      return [max, min]
     },
     score() {
       var risk = ''
@@ -90,8 +83,14 @@ export default {
       return scorer.contractMade(contract, this.vulnerable, this.result)
     },
     color() {
-      if (this.result >= 0) return 'success'
+      if (this.result == 0) return 'success'
+      else if (this.result >= 0) return 'primary'
       else return 'error'
+    }
+  },
+  watch: {
+    doubled(value) {
+      if (!value) this.redoubled = false
     }
   }
 }
