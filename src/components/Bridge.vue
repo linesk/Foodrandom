@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import scorer from 'bridge-scorer'
+
 export default {
   data() {
     return {
@@ -75,27 +77,17 @@ export default {
       return [Math.max(...results), Math.min(...results)]
     },
     score() {
-      var score = 0
-      if (this.result >= 0) {
-        if (this.selectedtrump == 'NT') {
-          score += 40 + 30 * (this.selectedlevel + this.result - 1)
-          if (this.selectedlevel >= 3) score += 300
-          else score += 50
-        } else if (this.selectedtrump == 'S' || this.selectedtrump == 'H') {
-          score += 30 * (this.selectedlevel + this.result)
-          if (this.selectedlevel >= 4) score += 300
-          else score += 50
-        } else {
-          score += 20 * (this.selectedlevel + this.result)
-          if (this.selectedlevel >= 5) score += 300
-          else score += 50
-        }
-        if (this.selectedlevel == 6) score += 500
-        else if (this.selectedlevel == 7) score += 1000
-      } else {
-        score += 50 * this.result
+      var risk = ''
+      if (this.doubled) {
+        risk += 'X'
+        if (this.redoubled) risk += 'X'
       }
-      return score
+      let contract = {
+        level: this.selectedlevel,
+        denomination: this.selectedtrump,
+        risk: risk
+      }
+      return scorer.contractMade(contract, this.vulnerable, this.result)
     },
     color() {
       if (this.result >= 0) return 'success'
