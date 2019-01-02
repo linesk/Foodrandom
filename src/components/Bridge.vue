@@ -24,7 +24,11 @@
           :max="results[0]"
           ticks
           :color="color"
-        ></v-slider>
+        >
+          <template slot="thumb-label">
+            <span>{{ resultview }}</span>
+          </template>
+        </v-slider>
       </v-flex>
 
       <v-flex xs12 sm12 d-flex class="pa-3">
@@ -74,12 +78,15 @@ export default {
         risk += 'X'
         if (this.redoubled) risk += 'X'
       }
-      let contract = {
-        level: this.selectedlevel,
-        denomination: this.selectedtrump,
-        risk: risk
-      }
-      return scorer.contractMade(contract, this.vulnerable, this.result)
+      return scorer.contractTricks(
+        {
+          level: this.selectedlevel,
+          denomination: this.selectedtrump,
+          risk: risk
+        },
+        this.vulnerable,
+        this.result + this.selectedlevel + 6
+      )
     },
     color() {
       if (this.result == 0) return 'success'
