@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-12 pa-3 mx-5">
+  <v-card class="elevation-12 pa-3 ma-10">
     <v-layout wrap align-center>
       <v-flex xs12 sm6 d-flex class="pa-1">
         <v-select :items="trumps" label="Trump" v-model="selectedtrump" outline></v-select>

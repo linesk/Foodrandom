@@ -33,6 +33,9 @@ export default new Vuex.Store({
     getUser(state) {
       return state.user
     },
+    getUserProfile(state) {
+      return state.userProfile
+    },
     getError(state) {
       return state.error
     },

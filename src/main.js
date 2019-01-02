@@ -3,13 +3,13 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-const firebase = require('./plugins/firebase.js')
+import { auth } from './plugins/firebase'
 
 let app
 
 Vue.config.productionTip = false
 
-firebase.auth.onAuthStateChanged(firebaseUser => {
+auth.onAuthStateChanged(firebaseUser => {
   if (!app) {
     new Vue({
       router,
