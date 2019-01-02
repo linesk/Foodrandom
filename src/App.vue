@@ -1,7 +1,7 @@
 
 <template>
   <v-app>
-    <v-navigation-drawer v-model="sidebar" app>
+    <v-navigation-drawer v-model="sidebar" temporary app>
       <v-list>
         <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-tile-action>
@@ -41,7 +41,7 @@
     </v-toolbar>
 
     <v-content>
-        <router-view></router-view>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>

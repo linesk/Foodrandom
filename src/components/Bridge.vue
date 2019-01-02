@@ -1,30 +1,47 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-card class="elevation-12 pa-3">
-      <v-flex xs12 sm12 d-flex>
-        <v-radio-group v-model="selectedlevel" row>
-          <v-radio v-for="level in levels" :key="level" :label="`Level ${level}`" :value="level"></v-radio>
-        </v-radio-group>
+  <v-card class="elevation-12 pa-3 mx-5">
+    <v-layout wrap align-center>
+      <v-flex xs12 sm6 d-flex class="pa-1">
+        <v-select :items="trumps" label="Trump" v-model="selectedtrump" outline></v-select>
       </v-flex>
-      <v-flex xs12 sm12 d-flex>
-        <v-radio-group v-model="selectedtrump" row>
-          <v-radio v-for="trump in trumps" :key="trump" :label="`Trump ${trump}`" :value="trump"></v-radio>
-        </v-radio-group>
+      <v-flex xs12 sm6 d-flex class="pa-1">
+        <v-select :items="levels" label="Level" v-model="selectedlevel" outline></v-select>
       </v-flex>
-      <v-flex xs12 sm12 d-flex>
-        <v-radio-group v-model="result" solo row>
-          <v-radio v-for="i in results" :key="i" :label="`Result: ${i}`" :value="i"></v-radio>
-        </v-radio-group>
+      <v-flex xs12 sm6 d-flex class="pa-1">
+        <v-switch
+          :label="`Vulnerable 1: ${vulnerable.toString().toUpperCase()}`"
+          v-model="vulnerable"
+        ></v-switch>
+      </v-flex>
+      <v-flex xs12 sm6 d-flex class="pa-1">
+        <v-switch :label="`Doubled: ${doubled.toString().toUpperCase()}`" v-model="doubled"></v-switch>
+        <v-switch
+          v-show="doubled"
+          :label="`Redoubled: ${redoubled.toString().toUpperCase()}`"
+          v-model="redoubled"
+        ></v-switch>
+      </v-flex>
+      <v-flex xs12 sm12 d-flex class="pa-1">
+        <v-slider
+          v-model="result"
+          thumb-label="always"
+          label="Result"
+          step="1"
+          :min="results[1]"
+          :max="results[0]"
+          ticks
+          :color="color"
+        ></v-slider>
       </v-flex>
 
       <v-flex xs12 sm12 d-flex class="pa-3">
-        <h5>Board Number: {{ bid }}</h5>
+        <h5>Vulnerable: {{ vulnerable }}</h5>
         <h5>Bid: {{ bid }}</h5>
         <h5>Result: {{ result }}</h5>
-        <h5>Score: {{ score }}</h5>
+        <h4>Score: {{ score }}</h4>
       </v-flex>
-    </v-card>
-  </v-layout>
+    </v-layout>
+  </v-card>
 </template>
 
 <script>
@@ -33,23 +50,29 @@ export default {
     return {
       levels: [1, 2, 3, 4, 5, 6, 7],
       trumps: ['NT', 'S', 'H', 'D', 'C'],
-      selectedlevel: 1,
-      selectedtrump: 'S',
-      boardnumber: 1,
+      selectedlevel: null,
+      selectedtrump: null,
+      vulnerable: false,
+      doubled: false,
+      redoubled: false,
       result: 0
     }
   },
   computed: {
     bid() {
-      return this.selectedlevel + this.selectedtrump
+      if (this.selectedlevel && this.selectedtrump) {
+        var x = ''
+        if (this.redoubled) x = 'xx'
+        else if (this.doubled) x = 'x'
+        return this.selectedlevel + this.selectedtrump + x
+      } else return '-'
     },
     results() {
       var results = []
       for (var i = 1; i <= 13; i++) {
         results.push(i - 6 - this.selectedlevel)
       }
-      results.reverse()
-      return results
+      return [Math.max(...results), Math.min(...results)]
     },
     score() {
       var score = 0
@@ -73,6 +96,10 @@ export default {
         score += 50 * this.result
       }
       return score
+    },
+    color() {
+      if (this.result >= 0) return 'success'
+      else return 'error'
     }
   }
 }
