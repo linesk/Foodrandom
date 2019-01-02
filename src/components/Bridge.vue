@@ -28,9 +28,8 @@
       </v-flex>
 
       <v-flex xs12 sm12 d-flex class="pa-3">
-        <h5>Vulnerable: {{ vulnerable.toString().toUpperCase() }}</h5>
         <h5>Bid: {{ bid }}</h5>
-        <h5>Result: {{ result }}</h5>
+        <h5>Result: {{ resultview }}</h5>
         <h4>Score: {{ score }}</h4>
       </v-flex>
     </v-layout>
@@ -86,6 +85,11 @@ export default {
       if (this.result == 0) return 'success'
       else if (this.result >= 0) return 'primary'
       else return 'error'
+    },
+    resultview() {
+      if (this.result == 0) return '='
+      else if (this.result >= 0) return '+' + this.result.toString()
+      else return this.result.toString()
     }
   },
   watch: {
