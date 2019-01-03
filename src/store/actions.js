@@ -1,7 +1,7 @@
 import router from '@/router'
 const firebase = require('../plugins/firebase.js')
 
-export const actions = {
+export default {
   setError({ commit }, payload) {
     commit('setError', payload)
   },

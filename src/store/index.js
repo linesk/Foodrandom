@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { actions } from './store/actions'
+import actions from './actions'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    appTitle: 'Food Random app',
+    appTitle: 'Bridge Club MDKKU',
     user: null,
     userProfile: {},
     error: null,
