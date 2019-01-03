@@ -14,7 +14,17 @@ export default new Vuex.Store({
   },
   mutations: {
     setUser(state, payload) {
-      state.user = payload
+      if (payload == null) state.user = null
+      else
+        state.user = {
+          displayName: payload.displayName,
+          email: payload.email,
+          emailVerified: payload.emailVerified,
+          photoURL: payload.photoURL,
+          isAnonymous: payload.isAnonymous,
+          uid: payload.uid,
+          providerData: payload.providerData
+        }
     },
     setUserProfile(state, payload) {
       state.userProfile = payload

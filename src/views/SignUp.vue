@@ -19,6 +19,16 @@
           <form @submit.prevent="userSignUp">
             <v-flex>
               <v-text-field
+                name="email"
+                label="Email"
+                id="email"
+                type="email"
+                v-model.trim="email"
+                required
+              ></v-text-field>
+            </v-flex>
+            <v-flex>
+              <v-text-field
                 name="firstname"
                 label="First Name"
                 id="firstname"
@@ -35,16 +45,7 @@
                 v-model.trim="lastname"
               ></v-text-field>
             </v-flex>
-            <v-flex>
-              <v-text-field
-                name="email"
-                label="Email"
-                id="email"
-                type="email"
-                v-model="email"
-                required
-              ></v-text-field>
-            </v-flex>
+            
             <v-flex>
               <v-text-field
                 name="password"
@@ -68,6 +69,7 @@
             </v-flex>
             <v-flex class="text-xs-center" mt-2>
               <v-btn color="primary" type="submit" :disabled="loading">Sign Up</v-btn>
+              <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
             </v-flex>
           </form>
         </v-layout>

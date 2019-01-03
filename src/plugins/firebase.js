@@ -9,7 +9,7 @@ Vue.use(VueFire)
 firebase.initializeApp(firebaseConfig)
 
 const auth = firebase.auth()
-const currentUser = auth.CurrentUser
+const user = firebase.auth().currentUser
 
 const db = firebase.firestore()
 db.settings({
@@ -17,4 +17,4 @@ db.settings({
 })
 const userCollection = db.collection('users')
 
-export { db, userCollection, auth, currentUser }
+export { db, userCollection, auth, user }

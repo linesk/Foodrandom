@@ -1,5 +1,5 @@
 import router from '@/router'
-const fb = require('../plugins/firebase.js')
+const firebase = require('../plugins/firebase.js')
 
 export const actions = {
   setError({ commit }, payload) {
@@ -8,22 +8,18 @@ export const actions = {
   // Authentication
   userSignUp({ commit }, payload) {
     commit('setLoading', true)
-    fb.auth
+    firebase.auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
-        fb.userCollection
-          .doc(firebaseUser.user.uid)
-          .set({
-            firstname: payload.firstname,
-            lastname: payload.lastname
-          })
-          .then(() => {
-            router.push('/home')
-          })
-          .catch(error => {
-            commit('setError', error.message)
-            commit('setLoading', false)
-          })
+        firebaseUser.user.sendEmailVerification()
+        firebaseUser.user.updateProfile({
+          displayName: payload.firstname + ' ' + payload.lastname
+        })
+        firebase.userCollection.doc(firebaseUser.user.uid).set({
+          firstname: payload.firstname,
+          lastname: payload.lastname
+        })
+        router.push('/home')
       })
       .catch(error => {
         commit('setError', error.message)
@@ -32,7 +28,7 @@ export const actions = {
   },
   userSignIn({ commit }, payload) {
     commit('setLoading', true)
-    fb.auth
+    firebase.auth
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
         router.push('/home')
@@ -42,22 +38,21 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  autoSignIn({ commit, state }, payload) {
+  autoSignIn({ commit }, payload) {
     commit('setUser', payload)
-    if (state.user) {
-      fb.userCollection
-        .doc(state.user.uid)
+    if (payload) {
+      firebase.userCollection
+        .doc(payload.uid)
         .get()
         .then(userdoc => {
           if (userdoc.exists) commit('setUserProfile', userdoc.data())
           commit('setLoading', false)
           commit('setError', null)
         })
-    }
+    } else commit('setUserProfile', {})
   },
-  userSignOut({ commit }) {
-    fb.auth.signOut()
-    commit('setUserProfile', {})
+  userSignOut() {
+    firebase.auth.signOut()
     router.push('/signin')
   }
 }
