@@ -37,7 +37,7 @@
                 required
               ></v-text-field>
             </v-flex>
-            <v-flex class="text-xs-center" mt-5>
+            <v-flex class="text-xs-center" mt-2>
               <v-btn color="primary" type="submit" :disabled="loading">Sign In</v-btn>
               <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
             </v-flex>

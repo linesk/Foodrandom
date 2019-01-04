@@ -23,10 +23,10 @@
         <v-toolbar-side-icon @click="sidebar = !sidebar"></v-toolbar-side-icon>
       </span>
       <v-toolbar-title v-if="!isAuthenticated">
-        <router-link to="/" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer"><v-icon>mdi-cards</v-icon> {{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-toolbar-title v-else>
-        <router-link to="/home" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
+        <router-link to="/home" tag="span" style="cursor: pointer"><v-icon>mdi-cards</v-icon> {{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">

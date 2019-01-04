@@ -1,26 +1,26 @@
 <template>
-  <v-card class="elevation-12 pa-auto">
+  <v-card class="elevation-12 pa-2">
     <v-card-title class="text-xs-center">
       <v-icon large left>mdi-cards-playing-outline</v-icon>
       <span class="title font-weight-light">Bridge Calculator</span>
     </v-card-title>
-    <v-divider light class="mx-2"></v-divider>
+    <v-divider light class="ma-2"></v-divider>
     <v-card-actions>
       <v-layout wrap align-center>
-        <v-flex xs12 sm6 d-flex class="px-1">
+        <v-flex xs12 sm6 d-inline-flex class="px-1">
           <v-select :items="trumps" label="Trump" v-model="selectedtrump" outline></v-select>
         </v-flex>
-        <v-flex xs12 sm6 d-flex class="px-1">
+        <v-flex xs12 sm6 d-inline-flex class="px-1">
           <v-select :items="levels" label="Level" v-model="selectedlevel" outline></v-select>
         </v-flex>
-        <v-flex xs12 sm6 d-flex class="px-1">
+        <v-flex xs12 sm6 d-inline-flex class="px-1">
           <v-switch label="Vulnerable" v-model="vulnerable" color="red"></v-switch>
         </v-flex>
-        <v-flex xs12 sm6 d-flex class="px-1">
+        <v-flex xs12 sm6 d-inline-flex class="px-1">
           <v-switch label="Doubled" v-model="doubled" color="red"></v-switch>
           <v-switch v-show="doubled" label="Redoubled" color="indigo" v-model="redoubled"></v-switch>
         </v-flex>
-        <v-flex xs12 sm12 d-flex class="pa-auto">
+        <v-flex xs12 sm12 d-inline-flex class="pa-auto">
           <v-slider
             v-model="result"
             thumb-label="always"
@@ -36,7 +36,7 @@
             </template>
           </v-slider>
         </v-flex>
-        <v-flex xs12 sm12 d-flex class="pa-3">
+        <v-flex xs12 sm12 d-inline-flex class="pa-3">
           <h5>Bid: {{ bid }}</h5>
           <h5>Result: {{ resultview }}</h5>
           <h4>Score: {{ score }}</h4>
