@@ -20,6 +20,8 @@ export default {
           lastname: payload.lastname
         })
         router.push('/home')
+        commit('setLoading', false)
+        commit('setError', null)
       })
       .catch(error => {
         commit('setError', error.message)
@@ -32,6 +34,8 @@ export default {
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
         router.push('/home')
+        commit('setLoading', false)
+        commit('setError', null)
       })
       .catch(error => {
         commit('setError', error.message)
@@ -39,6 +43,7 @@ export default {
       })
   },
   autoSignIn({ commit }, payload) {
+    commit('setLoading', true)
     commit('setUser', payload)
     if (payload) {
       firebase.userCollection
@@ -47,12 +52,17 @@ export default {
         .then(userdoc => {
           if (userdoc.exists) commit('setUserProfile', userdoc.data())
           commit('setLoading', false)
-          commit('setError', null)
         })
-    } else commit('setUserProfile', {})
+    } else {
+      commit('setUserProfile', {})
+      commit('setLoading', false)
+    }
   },
-  userSignOut() {
+  userSignOut({ commit }) {
+    commit('setLoading', true)
     firebase.auth.signOut()
     router.push('/signin')
+    commit('setLoading', false)
+    commit('setError', null)
   }
 }

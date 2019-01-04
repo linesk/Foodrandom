@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-12 pa-auto mx-5">
+  <v-card class="elevation-12 pa-auto">
     <v-card-title class="text-xs-center">
       <v-icon large left>mdi-cards-playing-outline</v-icon>
       <span class="title font-weight-light">Bridge Calculator</span>

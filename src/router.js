@@ -21,7 +21,10 @@ const routerOptions = [
   },
   {
     path: '/about',
-    component: 'About'
+    component: 'About',
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/home',
