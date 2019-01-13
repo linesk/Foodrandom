@@ -43,6 +43,12 @@
             </v-flex>
           </v-layout>
         </form>
+        <v-divider class="my-3"/>
+        <v-flex xs12 class="text-xs-center" mt-2>
+          <v-btn @click="socialSignIn" color="info">
+            <v-icon left>mdi-google</v-icon>Sign In with Google
+          </v-btn>
+        </v-flex>
       </v-flex>
     </v-layout>
   </v-container>
@@ -83,6 +89,9 @@ export default {
         email: this.email,
         password: this.password
       })
+    },
+    socialSignIn() {
+      this.$store.dispatch('socialSignIn')
     }
   }
 }

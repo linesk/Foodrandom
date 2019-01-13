@@ -1,5 +1,5 @@
 import router from '@/router'
-const firebase = require('../plugins/firebase.js')
+import { userCollection, auth, provider } from '@/plugins/firebase'
 
 export default {
   setError({ commit }, payload) {
@@ -8,14 +8,14 @@ export default {
   // Authentication
   userSignUp({ commit }, payload) {
     commit('setLoading', true)
-    firebase.auth
+    auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
         firebaseUser.user.sendEmailVerification()
         firebaseUser.user.updateProfile({
           displayName: payload.firstname + ' ' + payload.lastname
         })
-        firebase.userCollection.doc(firebaseUser.user.uid).set({
+        userCollection.doc(firebaseUser.user.uid).set({
           firstname: payload.firstname,
           lastname: payload.lastname
         })
@@ -30,8 +30,22 @@ export default {
   },
   userSignIn({ commit }, payload) {
     commit('setLoading', true)
-    firebase.auth
+    auth
       .signInWithEmailAndPassword(payload.email, payload.password)
+      .then(() => {
+        router.push('/home')
+        commit('setLoading', false)
+        commit('setError', null)
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
+  },
+  socialSignIn({ commit }) {
+    commit('setLoading', true)
+    auth
+      .signInWithPopup(provider)
       .then(() => {
         router.push('/home')
         commit('setLoading', false)
@@ -46,7 +60,7 @@ export default {
     commit('setLoading', true)
     commit('setUser', payload)
     if (payload) {
-      firebase.userCollection
+      userCollection
         .doc(payload.uid)
         .get()
         .then(userdoc => {
@@ -60,7 +74,7 @@ export default {
   },
   userSignOut({ commit }) {
     commit('setLoading', true)
-    firebase.auth.signOut()
+    auth.signOut()
     router.push('/signin')
     commit('setLoading', false)
     commit('setError', null)
