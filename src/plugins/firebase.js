@@ -10,7 +10,7 @@ firebase.initializeApp(firebaseConfig)
 
 // Auth
 const auth = firebase.auth()
-const provider = new firebase.auth.GoogleAuthProvider()
+const googleprovider = new firebase.auth.GoogleAuthProvider()
 const user = firebase.auth().currentUser
 
 // Firestore
@@ -20,4 +20,4 @@ db.settings({
 })
 const userCollection = db.collection('users')
 
-export { db, userCollection, auth, provider, user }
+export { db, userCollection, auth, googleprovider, user }

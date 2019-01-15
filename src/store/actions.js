@@ -1,5 +1,5 @@
 import router from '@/router'
-import { userCollection, auth, provider } from '@/plugins/firebase'
+import { userCollection, auth, googleprovider } from '@/plugins/firebase'
 
 export default {
   setError({ commit }, payload) {
@@ -7,7 +7,7 @@ export default {
   },
   // Authentication
   userSignUp({ commit }, payload) {
-    commit('setLoading', true)
+    commit('setLoading')
     auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
@@ -15,68 +15,55 @@ export default {
         firebaseUser.user.updateProfile({
           displayName: payload.firstname + ' ' + payload.lastname
         })
-        userCollection.doc(firebaseUser.user.uid).set({
-          firstname: payload.firstname,
-          lastname: payload.lastname
-        })
         router.push('/home')
-        commit('setLoading', false)
-        commit('setError', null)
+        commit('setPass')
       })
       .catch(error => {
         commit('setError', error.message)
-        commit('setLoading', false)
       })
   },
   userSignIn({ commit }, payload) {
-    commit('setLoading', true)
+    commit('setLoading')
     auth
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
         router.push('/home')
-        commit('setLoading', false)
-        commit('setError', null)
+        commit('setPass')
       })
       .catch(error => {
         commit('setError', error.message)
-        commit('setLoading', false)
       })
   },
   socialSignIn({ commit }) {
-    commit('setLoading', true)
-    auth
-      .signInWithPopup(provider)
-      .then(() => {
-        router.push('/home')
-        commit('setLoading', false)
-        commit('setError', null)
-      })
-      .catch(error => {
-        commit('setError', error.message)
-        commit('setLoading', false)
-      })
+    commit('setLoading')
+    auth.signInWithRedirect(googleprovider).catch(error => {
+      commit('setError', error.message)
+    })
   },
-  autoSignIn({ commit }, payload) {
-    commit('setLoading', true)
-    commit('setUser', payload)
-    if (payload) {
+  autoSignIn({ commit }, user) {
+    var userprofile
+    if (user) {
       userCollection
-        .doc(payload.uid)
+        .doc(user.uid)
         .get()
         .then(userdoc => {
-          if (userdoc.exists) commit('setUserProfile', userdoc.data())
-          commit('setLoading', false)
+          if (userdoc.exists) userprofile = userdoc.data()
+          else userprofile = null
+          commit({
+            type: 'setUser',
+            user,
+            userprofile
+          })
         })
-    } else {
-      commit('setUserProfile', {})
-      commit('setLoading', false)
     }
   },
   userSignOut({ commit }) {
-    commit('setLoading', true)
-    auth.signOut()
-    router.push('/signin')
-    commit('setLoading', false)
-    commit('setError', null)
+    auth.signOut().then(() => {
+      commit({
+        type: 'setUser',
+        user: null
+      })
+      router.push('/')
+    })
   }
 }

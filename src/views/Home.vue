@@ -3,7 +3,10 @@
     <v-layout row wrap>
       <v-flex xs12 md8 offset-md2 class="text-xs-center">
         <h1>Home page</h1>
-        <p>Hello! {{ getUser.displayName }}</p>
+      </v-flex>
+      <v-flex xs12 class="text-xs-center" mt-3>
+        <p>This is a Bridge calculator</p>
+        <p>Hello {{ getUser.displayName }}</p>
       </v-flex>
       <v-flex xs12 md8 offset-md2>
         <bridgeScorer></bridgeScorer>
@@ -24,7 +27,7 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters(['getUserProfile', 'getUser'])
+    ...mapGetters(['getUser']),
   }
 }
 </script>
