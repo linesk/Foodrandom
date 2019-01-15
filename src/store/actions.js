@@ -36,9 +36,8 @@ export default {
   },
   socialSignIn({ commit }) {
     commit('setLoading')
-    auth.signInWithRedirect(googleprovider).catch(error => {
-      commit('setError', error.message)
-    })
+    auth.signInWithRedirect(googleprovider)
+    commit('setPass')
   },
   autoSignIn({ commit }, user) {
     var userprofile
