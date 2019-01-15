@@ -37,6 +37,15 @@
         <v-btn flat @click="userSignOut" v-if="isAuthenticated">
           <v-icon left>exit_to_app</v-icon>Sign Out
         </v-btn>
+        <v-btn flat icon>
+        <v-avatar
+        size="35"
+          color="grey lighten-4"
+        >
+          <img v-if="$store.getters.getUser.photoURL" :src="$store.getters.getUser.photoURL" alt="avatar">
+          <v-icon v-else>account_circle</v-icon>
+        </v-avatar>
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -59,8 +68,8 @@ export default {
     },
     isAuthenticated() {
       return (
-        this.$store.getters.getUser !== null &&
-        this.$store.getters.getUser !== undefined
+        this.$store.getters.getUser.uid !== null &&
+        this.$store.getters.getUser.uid !== undefined
       )
     },
     menuItems() {
