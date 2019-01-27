@@ -1,5 +1,5 @@
 import router from '@/router'
-const firebase = require('../plugins/firebase.js')
+import { userCollection, auth, googleprovider } from '@/plugins/firebase'
 
 export default {
   setError({ commit }, payload) {
@@ -7,62 +7,62 @@ export default {
   },
   // Authentication
   userSignUp({ commit }, payload) {
-    commit('setLoading', true)
-    firebase.auth
+    commit('setLoading')
+    auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(firebaseUser => {
         firebaseUser.user.sendEmailVerification()
         firebaseUser.user.updateProfile({
           displayName: payload.firstname + ' ' + payload.lastname
         })
-        firebase.userCollection.doc(firebaseUser.user.uid).set({
-          firstname: payload.firstname,
-          lastname: payload.lastname
-        })
         router.push('/home')
-        commit('setLoading', false)
-        commit('setError', null)
+        commit('setPass')
       })
       .catch(error => {
         commit('setError', error.message)
-        commit('setLoading', false)
       })
   },
   userSignIn({ commit }, payload) {
-    commit('setLoading', true)
-    firebase.auth
+    commit('setLoading')
+    auth
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
         router.push('/home')
-        commit('setLoading', false)
-        commit('setError', null)
+        commit('setPass')
       })
       .catch(error => {
         commit('setError', error.message)
-        commit('setLoading', false)
       })
   },
-  autoSignIn({ commit }, payload) {
-    commit('setLoading', true)
-    commit('setUser', payload)
-    if (payload) {
-      firebase.userCollection
-        .doc(payload.uid)
+  socialSignIn({ commit }) {
+    commit('setLoading')
+    auth.signInWithRedirect(googleprovider)
+    commit('setPass')
+  },
+  autoSignIn({ commit }, user) {
+    var userprofile
+    if (user) {
+      userCollection
+        .doc(user.uid)
         .get()
         .then(userdoc => {
-          if (userdoc.exists) commit('setUserProfile', userdoc.data())
-          commit('setLoading', false)
+          if (userdoc.exists) userprofile = userdoc.data()
+          else userprofile = null
+          commit({
+            type: 'setUser',
+            user,
+            userprofile
+          })
         })
-    } else {
-      commit('setUserProfile', {})
-      commit('setLoading', false)
     }
   },
   userSignOut({ commit }) {
-    commit('setLoading', true)
-    firebase.auth.signOut()
-    router.push('/signin')
-    commit('setLoading', false)
-    commit('setError', null)
+    auth.signOut().then(() => {
+      commit({
+        type: 'setUser',
+        user: null
+      })
+      router.push('/')
+    })
   }
 }

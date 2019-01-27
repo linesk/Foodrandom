@@ -8,13 +8,16 @@ import { firebaseConfig } from './config'
 Vue.use(VueFire)
 firebase.initializeApp(firebaseConfig)
 
+// Auth
 const auth = firebase.auth()
+const googleprovider = new firebase.auth.GoogleAuthProvider()
 const user = firebase.auth().currentUser
 
+// Firestore
 const db = firebase.firestore()
 db.settings({
   timestampsInSnapshots: true
 })
 const userCollection = db.collection('users')
 
-export { db, userCollection, auth, user }
+export { db, userCollection, auth, googleprovider, user }

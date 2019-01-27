@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - "10.14"
+  - "stable"
+branches:
+  only:
+  - master # auto build and deploy in only master branch
+install:
+  - npm install @vue/cli-service
+
+script:
+  - npm run build
+
+deploy:
+  provider: firebase
+  token:
+    secure: ${FIREBASE_TOKEN}
+  project: ${PROJECT_ID}

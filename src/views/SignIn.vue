@@ -1,5 +1,4 @@
 <template>
-  <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-2>
         <h1>Sign In</h1>
@@ -43,9 +42,14 @@
             </v-flex>
           </v-layout>
         </form>
+        <v-divider class="my-3"/>
+        <v-flex xs12 class="text-xs-center" mt-2>
+          <v-btn @click="socialSignIn" color="info">
+            <v-icon left>mdi-google</v-icon>Sign In with Google
+          </v-btn>
+        </v-flex>
       </v-flex>
     </v-layout>
-  </v-container>
 </template>
 
 <script>
@@ -83,6 +87,9 @@ export default {
         email: this.email,
         password: this.password
       })
+    },
+    socialSignIn() {
+      this.$store.dispatch('socialSignIn')
     }
   }
 }

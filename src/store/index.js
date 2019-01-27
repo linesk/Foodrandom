@@ -1,39 +1,60 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import actions from './actions'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     appTitle: 'Bridge Club MDKKU',
-    user: null,
-    userProfile: {},
+    user: {
+      displayName: null,
+      email: null,
+      emailVerified: null,
+      photoURL: null,
+      isAnonymous: null,
+      uid: null,
+      providerData: null,
+      userProfile: null
+    },
     error: null,
     loading: false
   },
   mutations: {
     setUser(state, payload) {
-      if (payload == null) state.user = null
-      else
+      if (!payload.user) {
         state.user = {
-          displayName: payload.displayName,
-          email: payload.email,
-          emailVerified: payload.emailVerified,
-          photoURL: payload.photoURL,
-          isAnonymous: payload.isAnonymous,
-          uid: payload.uid,
-          providerData: payload.providerData
+          displayName: null,
+          email: null,
+          emailVerified: null,
+          photoURL: null,
+          isAnonymous: null,
+          uid: null,
+          providerData: null,
+          userProfile: null
         }
-    },
-    setUserProfile(state, payload) {
-      state.userProfile = payload
+      } else {
+        state.user = {
+          displayName: payload.user.displayName,
+          email: payload.user.email,
+          emailVerified: payload.user.emailVerified,
+          photoURL: payload.user.photoURL,
+          isAnonymous: payload.user.isAnonymous,
+          uid: payload.user.uid,
+          providerData: payload.user.providerData,
+          userProfile: payload.userprofile
+        }
+      }
     },
     setError(state, payload) {
       state.error = payload
+      state.loading = false
     },
-    setLoading(state, payload) {
-      state.loading = payload
+    setPass(state) {
+      state.error = null
+      state.loading = false
+    },
+    setLoading(state) {
+      state.loading = true
     }
   },
   getters: {
@@ -42,9 +63,6 @@ export default new Vuex.Store({
     },
     getUser(state) {
       return state.user
-    },
-    getUserProfile(state) {
-      return state.userProfile
     },
     getError(state) {
       return state.error
