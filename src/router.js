@@ -20,6 +20,13 @@ const routerOptions = [
     component: 'SignUp'
   },
   {
+    path: '/calculator',
+    component: 'Calculator',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/about',
     component: 'About',
     meta: {

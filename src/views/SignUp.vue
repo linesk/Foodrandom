@@ -1,5 +1,4 @@
 <template>
-  <v-container fluid>
     <v-layout row wrap>
       <v-flex xs12 class="text-xs-center" mt-2>
         <h1>Sign Up</h1>
@@ -75,7 +74,6 @@
         </v-layout>
       </v-flex>
     </v-layout>
-  </v-container>
 </template>
 
 <script>
